@@ -35,19 +35,14 @@ xcelium.d/
 # Editor and OS junk
 .DS_Store
 Thumbs.db
-*.dump
-!tests/*.dump
-!expected_dmem.dump
-!out/dmem.dump
 *.bak
 *.swp
 *~
 *.svf
 *.json
-Phase_2_Group_13/
+Phase_3_Group_13/
 *.zip
 *.tar
-Phase2_for_student/
 doc/
 
 # TA Provided files
