@@ -1,0 +1,54 @@
+# ignore ModelSim generated files and directories (temp files and so on)
+[_@]*
+
+# ignore compilation output of ModelSim
+*.mti
+*.dat
+*.dbs
+*.psm
+*.bak
+*.cmp
+*.bsf
+
+# ignore simulation output of ModelSim
+wlf*
+*.wlf
+*.vstf
+*.ucdb
+cov*/
+transcript*
+sc_dpiheader.h
+vsim.dbg
+
+# Cadence / NC-Sim / Xcelium simulation files
+INCA_libs/
+ncsim.*
+ncvlog.*
+ncelab.*
+*.log
+*.history
+*.key
+waves.shm/
+xcelium.d/
+.simvision/
+
+# Editor and OS junk
+.DS_Store
+Thumbs.db
+*.dump
+!tests/*.dump
+!expected_dmem.dump
+!out/dmem.dump
+*.bak
+*.swp
+*~
+*.svf
+*.json
+Phase_2_Group_13/
+*.zip
+*.tar
+Phase2_for_student/
+doc/
+
+# TA Provided files
+*.csh
