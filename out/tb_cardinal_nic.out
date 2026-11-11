@@ -1,0 +1,56 @@
+================================================================
+Running Full NIC Testbench (Report R1 Cases a through i)
+================================================================
+
+--- [R1(a)] Synchronous Reset Test ---
+1200: ok: net_so during reset = 0000000000000000
+1200: ok: net_ri during reset = 0000000000000001
+2000: ok: input status after reset = 0000000000000000
+2800: ok: output status after reset = 0000000000000000
+
+--- [R1(d)] Processor Store with Output Buffer Free ---
+4400: ok: output status after store = 0000000000000001
+
+--- [R1(e)] Processor Store with Output Buffer Occupied ---
+6000: ok: output status remains 1 = 0000000000000001
+
+--- [R1(c)] Router Handshake with Blocking (net_ro = 0) ---
+8400: ok: sends during router blocking = 0000000000000000
+9200: ok: output status held during blocking = 0000000000000001
+
+--- [R1(b)] Router Handshake without Blocking ---
+9400: net_so = 1 at this edge, net_do = 9001000000000001, net_polarity = 0
+10800: ok: sends after unblocking (VC1) = 0000000000000001
+11600: ok: output status after send = 0000000000000000
+
+--- [R1(f)] Router Delivery and Processor Load (Full Buffer) ---
+12400: ok: net_ri with full input buffer = 0000000000000000
+13200: ok: input status with packet = 0000000000000001
+14000: ok: input buffer data = 0000000200000200
+14800: ok: input status after read = 0000000000000000
+14800: ok: net_ri after read = 0000000000000001
+
+--- [R1(g)] Processor Load with Input Buffer Empty ---
+16400: ok: input status remains 0 after empty read = 0000000000000000
+16400: ok: net_ri remains 1 after empty read = 0000000000000001
+
+--- [R1(h)] Simultaneous Send and Receive in Same Clock Cycle ---
+18000: ok: input status after simultaneous access = 0000000000000001
+18800: ok: output status after simultaneous access = 0000000000000001
+18800: ok: net_ri dropped after simultaneous access = 0000000000000000
+19600: ok: simultaneous rx packet read = 9004000087654321
+20400: ok: input status cleared = 0000000000000000
+20400: ok: net_ri restored to 1 = 0000000000000001
+
+--- [R1(i)] Packets of Both VC Values (VC0 then VC1) ---
+21000: net_so = 1 at this edge, net_do = 0003000012345678, net_polarity = 1
+22000: ok: sends after VC0 packet transfer = 0000000000000002
+22800: ok: output status free after VC0 send = 0000000000000000
+24400: ok: output status after second store = 0000000000000001
+24600: net_so = 1 at this edge, net_do = 90050000aabbccdd, net_polarity = 0
+26000: ok: sends after VC1 packet transfer = 0000000000000003
+26800: ok: output status free after VC1 send = 0000000000000000
+
+================================================================
+ALL NIC TEST CASES PASSED SUCCESSFULLY (0 errors, 3 sends)
+================================================================
