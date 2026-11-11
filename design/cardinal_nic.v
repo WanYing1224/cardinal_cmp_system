@@ -43,7 +43,11 @@
 // so your Project 1 code (d_in[63] = vc, addr[1] = high address bit)
 // stays right. Do not mix: a module declared [0:63] must use d_in[0] for
 // the vc bit and addr[0] for the high address bit.
+//
+// Description: Cardinal Network Interface Component (NIC)
+//              Provides memory-mapped register interface between CPU and Router.
 ////////////////////////////////////////////////////////////////////////////
+
 module cardinal_nic (
     input         clk,          // rising-edge clock
     input         reset,        // synchronous, active high
@@ -64,13 +68,108 @@ module cardinal_nic (
     input         net_polarity  // polarity of the connected router
 );
 
-    // ---------------------------------------------------------------------
-    // TODO: your design. Remove these placeholder assignments when you
-    // drive the outputs.
-    // ---------------------------------------------------------------------
-    assign d_out  = 64'd0;
-    assign net_ri = 1'b1;
-    assign net_so = 1'b0;
-    assign net_do = 64'd0;
+wire clk, reset;
+wire [0:1] addr;
+wire [0:63] d_in;        
+reg [0:63] d_out;
+wire nicEn, nicWrEn;
+wire net_si, net_ri;      
+wire [0:63] net_di;
+wire net_so, net_ro, net_polarity;
+wire [0:63] net_do;
+
+/*=============================================
+    Internal Buffers & Status Registers
+==============================================*/
+reg [0:63] input_buf, output_buf;
+reg input_status, output_status;    // 1'b1 = occupied/full, 1'b0 = empty
+
+/*=============================================
+    Network Rx Handshake (Router -> NIC)
+==============================================*/
+// Ready when input buffer is empty
+assign net_ri = ~input_status;      
+
+// Detect if processor is reading and popping the input buffer this cycle
+wire proc_pop_rx = nicEn && (!nicWrEn) && (addr == 2'b00);      
+
+// RX Latch & Status Update
+always @(posedge clk) begin
+    if (reset) begin
+        input_buf <= 64'h0;
+        input_status <= 64'h0;
+    end
+    else begin
+        if (net_si && ~input_status) begin
+            // Latch incoming packet from router
+            input_buf <= net_di;
+            input_status <= 1'b1;
+        end
+        else if (proc_pop_rx && input_status) begin
+            input_status <= 1'b0;    // Processor reads and clears the input buffer
+        end
+    end
+end
+
+/*=============================================
+    Network Tx Handshake (Router -> NIC)
+==============================================*/
+// Packet VC is bit 0 of output_buf:
+// vc = 0 (even virtual channel) -> injected when net_polarity == 1
+// vc = 1 (odd virtual channel)  -> injected when net_polarity == 0
+wire target_polarity = ~output_buf[0];
+
+// Assert net_so only when packet exists, router has space, and polarity matches
+assign net_so = output_status && net_ro && (net_polarity == target_polarity);
+assign net_do = output_buf;
+
+// Handshake completion on output channel
+wire net_tx_done = net_so && net_ro;
+
+/*=============================================
+Processor Tx Latch & Output Buffer Management
+==============================================*/
+// Processor store condition: enabled, write-enabled, addr == 2'b10, and buffer free
+wire proc_push_tx = nicEn && nicWrEn && (addr == 2'b10) && (~output_status);
+
+always @(posedge clk) begin
+    if (reset) begin
+        output_buf    <= 64'h0;
+        output_status <= 1'b0;
+    end 
+    else begin
+        if (proc_push_tx) begin
+            output_buf <= d_in;
+            output_status <= 1'b1;
+        end 
+        else if (net_tx_done) begin
+            output_status <= 1'b0;    // Router accepted packet; free buffer
+        end
+    end
+end
+
+/*=============================================
+Processor Load Data Path (Registered 1-Cycle Output)
+==============================================*/
+always @(posedge clk) begin
+    if (reset) begin
+        d_out <= 64'h0;
+    end 
+    else if (!nicEn) begin
+        d_out <= 64'h0;
+    end 
+    else if (!nicWrEn) begin
+        case (addr)
+            2'b00:   d_out <= input_buf;
+            2'b01:   d_out <= {63'b0, input_status};
+            2'b10:   d_out <= 64'h0;    // Read from write-only output buffer is undefined
+            2'b11:   d_out <= {63'b0, output_status};
+            default: d_out <= 64'h0;
+        endcase
+    end 
+    else begin
+        d_out <= 64'h0;    // During writes, d_out is idle
+    end
+end
 
 endmodule
