@@ -1,0 +1,1 @@
+; R2(i) / A6: Tight Polling Loops with Zero VNOPs and Irregular Send/Receive

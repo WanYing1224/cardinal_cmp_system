@@ -1,0 +1,1 @@
+; R2(h) / A5: 10-packet burst from Node 0 to Node 1 with receiver delay
