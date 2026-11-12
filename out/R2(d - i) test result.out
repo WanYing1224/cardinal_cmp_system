@@ -1,0 +1,89 @@
+R2(d) Reset & Back-to-Back Sample Program:
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=cmp_test)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 72 72 72 72 72 72 72 72 72 72 72 72 72 72 72 72
+[Run 1] Data memories of the 16 nodes dumped to dumps/cmp_test.dmem.N.dump
+[Run 1] TEST PASSED: all 2048 memory locations match expected_dmem.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=cmp_test)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 72 72 72 72 72 72 72 72 72 72 72 72 72 72 72 72
+[Run 2] Data memories of the 16 nodes dumped to dumps/cmp_test.dmem.N.dump
+[Run 2] TEST PASSED: all 2048 memory locations match expected_dmem.N.dump
+Simulation complete via $finish(1) at time 656 NS + 0
+
+R2(e) Processor ALU/SFU/Hazard Test (A2):
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=tests/test_r2e_cpu)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+[Run 1] Data memories of the 16 nodes dumped to dumps/test_r2e_cpu.dmem.N.dump
+[Run 1] TEST PASSED: all 512 memory locations match tests/test_r2e_cpu.expected.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=tests/test_r2e_cpu)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+[Run 2] Data memories of the 16 nodes dumped to dumps/test_r2e_cpu.dmem.N.dump
+[Run 2] TEST PASSED: all 512 memory locations match tests/test_r2e_cpu.expected.N.dump
+Simulation complete via $finish(1) at time 280 NS + 0
+
+R2(f) Full All-to-All Mesh Communication (A3):
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=tests/test_r2f_comm)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 218 266 311 360 406 454 475 519 562 606 633 645 672 708 720 711
+[Run 1] Data memories of the 16 nodes dumped to dumps/test_r2f_comm.dmem.N.dump
+[Run 1] TEST PASSED: all 512 memory locations match tests/test_r2f_comm.expected.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=tests/test_r2f_comm)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 218 266 311 360 406 454 475 519 562 606 633 645 672 708 720 711
+[Run 2] Data memories of the 16 nodes dumped to dumps/test_r2f_comm.dmem.N.dump
+[Run 2] TEST PASSED: all 512 memory locations match tests/test_r2f_comm.expected.N.dump
+Simulation complete via $finish(1) at time 5840 NS + 0
+
+R2(g) NIC Address Map & Protection (A4):
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=tests/test_r2g_addrmap)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+[Run 1] Data memories of the 16 nodes dumped to dumps/test_r2g_addrmap.dmem.N.dump
+[Run 1] TEST PASSED: all 512 memory locations match tests/test_r2g_addrmap.expected.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=tests/test_r2g_addrmap)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+[Run 2] Data memories of the 16 nodes dumped to dumps/test_r2g_addrmap.dmem.N.dump
+[Run 2] TEST PASSED: all 512 memory locations match tests/test_r2g_addrmap.expected.N.dump
+Simulation complete via $finish(1) at time 240 NS + 0
+
+R2(h) Network Contention & Blocking (A5) (Also record waveform for report):
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=tests/test_r2h_blocking)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 145 161 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[Run 1] Data memories of the 16 nodes dumped to dumps/test_r2h_blocking.dmem.N.dump
+[Run 1] TEST PASSED: all 512 memory locations match tests/test_r2h_blocking.expected.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=tests/test_r2h_blocking)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 145 161 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[Run 2] Data memories of the 16 nodes dumped to dumps/test_r2h_blocking.dmem.N.dump
+[Run 2] TEST PASSED: all 512 memory locations match tests/test_r2h_blocking.expected.N.dump
+Simulation complete via $finish(1) at time 1368 NS + 0
+
+R2(i) Tight Polling Loops (A6):
+================================================================
+Starting Simulation Run 1 of 2 (PREFIX=tests/test_r2i_tight)
+================================================================
+[Run 1] All nodes completed; node cycle counts: 61 1 50 1 1 1 1 1 1 1 1 1 1 1 1 1
+[Run 1] Data memories of the 16 nodes dumped to dumps/test_r2i_tight.dmem.N.dump
+[Run 1] TEST PASSED: all 512 memory locations match tests/test_r2i_tight.expected.N.dump
+================================================================
+Starting Simulation Run 2 of 2 (PREFIX=tests/test_r2i_tight)
+================================================================
+[Run 2] All nodes completed; node cycle counts: 61 1 50 1 1 1 1 1 1 1 1 1 1 1 1 1
+[Run 2] Data memories of the 16 nodes dumped to dumps/test_r2i_tight.dmem.N.dump
+[Run 2] TEST PASSED: all 512 memory locations match tests/test_r2i_tight.expected.N.dump
+Simulation complete via $finish(1) at time 568 NS + 0
