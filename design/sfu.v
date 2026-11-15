@@ -51,27 +51,30 @@ always @(*) begin
         5'd14: begin
             case (ww)
                 2'b00: begin // 8-bit x 8
-                    sfu_out[0:7]   = (rB_data[0:7]   != 8'd0) ? (rA_data[0:7]   / rB_data[0:7])   : 8'd0;
-                    sfu_out[8:15]  = (rB_data[8:15]  != 8'd0) ? (rA_data[8:15]  / rB_data[8:15])  : 8'd0;
-                    sfu_out[16:23] = (rB_data[16:23] != 8'd0) ? (rA_data[16:23] / rB_data[16:23]) : 8'd0;
-                    sfu_out[24:31] = (rB_data[24:31] != 8'd0) ? (rA_data[24:31] / rB_data[24:31]) : 8'd0;
-                    sfu_out[32:39] = (rB_data[32:39] != 8'd0) ? (rA_data[32:39] / rB_data[32:39]) : 8'd0;
-                    sfu_out[40:47] = (rB_data[40:47] != 8'd0) ? (rA_data[40:47] / rB_data[40:47]) : 8'd0;
-                    sfu_out[48:55] = (rB_data[48:55] != 8'd0) ? (rA_data[48:55] / rB_data[48:55]) : 8'd0;
-                    sfu_out[56:63] = (rB_data[56:63] != 8'd0) ? (rA_data[56:63] / rB_data[56:63]) : 8'd0;
+                    sfu_out[0:7]   = (rB_data[0:7]   != 8'd0) ? (rA_data[0:7]   / rB_data[0:7])   : 8'hFF;
+                    sfu_out[8:15]  = (rB_data[8:15]  != 8'd0) ? (rA_data[8:15]  / rB_data[8:15])  : 8'hFF;
+                    sfu_out[16:23] = (rB_data[16:23] != 8'd0) ? (rA_data[16:23] / rB_data[16:23]) : 8'hFF;
+                    sfu_out[24:31] = (rB_data[24:31] != 8'd0) ? (rA_data[24:31] / rB_data[24:31]) : 8'hFF;
+                    sfu_out[32:39] = (rB_data[32:39] != 8'd0) ? (rA_data[32:39] / rB_data[32:39]) : 8'hFF;
+                    sfu_out[40:47] = (rB_data[40:47] != 8'd0) ? (rA_data[40:47] / rB_data[40:47]) : 8'hFF;
+                    sfu_out[48:55] = (rB_data[48:55] != 8'd0) ? (rA_data[48:55] / rB_data[48:55]) : 8'hFF;
+                    sfu_out[56:63] = (rB_data[56:63] != 8'd0) ? (rA_data[56:63] / rB_data[56:63]) : 8'hFF;
                 end
                 2'b01: begin // 16-bit x 4
-                    sfu_out[0:15]  = (rB_data[0:15]  != 16'd0) ? (rA_data[0:15]  / rB_data[0:15])  : 16'd0;
-                    sfu_out[16:31] = (rB_data[16:31] != 16'd0) ? (rA_data[16:31] / rB_data[16:31]) : 16'd0;
-                    sfu_out[32:47] = (rB_data[32:47] != 16'd0) ? (rA_data[32:47] / rB_data[32:47]) : 16'd0;
-                    sfu_out[48:63] = (rB_data[48:63] != 16'd0) ? (rA_data[48:63] / rB_data[48:63]) : 16'd0;
+                    sfu_out[0:15]  = (rB_data[0:15]  != 16'd0) ? (rA_data[0:15]  / rB_data[0:15])  : 16'hFFFF;
+                    sfu_out[16:31] = (rB_data[16:31] != 16'd0) ? (rA_data[16:31] / rB_data[16:31]) : 16'hFFFF;
+                    sfu_out[32:47] = (rB_data[32:47] != 16'd0) ? (rA_data[32:47] / rB_data[32:47]) : 16'hFFFF;
+                    sfu_out[48:63] = (rB_data[48:63] != 16'd0) ? (rA_data[48:63] / rB_data[48:63]) : 16'hFFFF;
                 end
                 2'b10: begin // 32-bit x 2
-                    sfu_out[0:31]  = (rB_data[0:31]  != 32'd0) ? (rA_data[0:31]  / rB_data[0:31])  : 32'd0;
-                    sfu_out[32:63] = (rB_data[32:63] != 32'd0) ? (rA_data[32:63] / rB_data[32:63]) : 32'd0;
+                    sfu_out[0:31]  = (rB_data[0:31]  != 32'd0) ? (rA_data[0:31]  / rB_data[0:31])  : 32'hFFFF_FFFF;
+                    sfu_out[32:63] = (rB_data[32:63] != 32'd0) ? (rA_data[32:63] / rB_data[32:63]) : 32'hFFFF_FFFF;
                 end
                 2'b11: begin // 64-bit x 1
-                    sfu_out = (rB_data != 64'd0) ? (rA_data / rB_data) : 64'd0;
+                    sfu_out[0:63]  = (rB_data[0:63]  != 64'd0) ? (rA_data[0:63]  / rB_data[0:63])  : 64'hFFFF_FFFF_FFFF_FFFF;
+                end
+                default: begin
+                    sfu_out = 64'h0000_0000_0000_0000;
                 end
             endcase
         end
@@ -82,27 +85,30 @@ always @(*) begin
         5'd15: begin
             case (ww)
                 2'b00: begin // 8-bit x 8
-                    sfu_out[0:7]   = (rB_data[0:7]   != 8'd0) ? (rA_data[0:7]   % rB_data[0:7])   : 8'd0;
-                    sfu_out[8:15]  = (rB_data[8:15]  != 8'd0) ? (rA_data[8:15]  % rB_data[8:15])  : 8'd0;
-                    sfu_out[16:23] = (rB_data[16:23] != 8'd0) ? (rA_data[16:23] % rB_data[16:23]) : 8'd0;
-                    sfu_out[24:31] = (rB_data[24:31] != 8'd0) ? (rA_data[24:31] % rB_data[24:31]) : 8'd0;
-                    sfu_out[32:39] = (rB_data[32:39] != 8'd0) ? (rA_data[32:39] % rB_data[32:39]) : 8'd0;
-                    sfu_out[40:47] = (rB_data[40:47] != 8'd0) ? (rA_data[40:47] % rB_data[40:47]) : 8'd0;
-                    sfu_out[48:55] = (rB_data[48:55] != 8'd0) ? (rA_data[48:55] % rB_data[48:55]) : 8'd0;
-                    sfu_out[56:63] = (rB_data[56:63] != 8'd0) ? (rA_data[56:63] % rB_data[56:63]) : 8'd0;
+                    sfu_out[0:7]   = (rB_data[0:7]   != 8'd0) ? (rA_data[0:7]   % rB_data[0:7])   : rA_data[0:7];
+                    sfu_out[8:15]  = (rB_data[8:15]  != 8'd0) ? (rA_data[8:15]  % rB_data[8:15])  : rA_data[8:15];
+                    sfu_out[16:23] = (rB_data[16:23] != 8'd0) ? (rA_data[16:23] % rB_data[16:23]) : rA_data[16:23];
+                    sfu_out[24:31] = (rB_data[24:31] != 8'd0) ? (rA_data[24:31] % rB_data[24:31]) : rA_data[24:31];
+                    sfu_out[32:39] = (rB_data[32:39] != 8'd0) ? (rA_data[32:39] % rB_data[32:39]) : rA_data[32:39];
+                    sfu_out[40:47] = (rB_data[40:47] != 8'd0) ? (rA_data[40:47] % rB_data[40:47]) : rA_data[40:47];
+                    sfu_out[48:55] = (rB_data[48:55] != 8'd0) ? (rA_data[48:55] % rB_data[48:55]) : rA_data[48:55];
+                    sfu_out[56:63] = (rB_data[56:63] != 8'd0) ? (rA_data[56:63] % rB_data[56:63]) : rA_data[56:63];
                 end
                 2'b01: begin // 16-bit x 4
-                    sfu_out[0:15]  = (rB_data[0:15]  != 16'd0) ? (rA_data[0:15]  % rB_data[0:15])  : 16'd0;
-                    sfu_out[16:31] = (rB_data[16:31] != 16'd0) ? (rA_data[16:31] % rB_data[16:31]) : 16'd0;
-                    sfu_out[32:47] = (rB_data[32:47] != 16'd0) ? (rA_data[32:47] % rB_data[32:47]) : 16'd0;
-                    sfu_out[48:63] = (rB_data[48:63] != 16'd0) ? (rA_data[48:63] % rB_data[48:63]) : 16'd0;
+                    sfu_out[0:15]  = (rB_data[0:15]  != 16'd0) ? (rA_data[0:15]  % rB_data[0:15])  : rA_data[0:15];
+                    sfu_out[16:31] = (rB_data[16:31] != 16'd0) ? (rA_data[16:31] % rB_data[16:31]) : rA_data[16:31];
+                    sfu_out[32:47] = (rB_data[32:47] != 16'd0) ? (rA_data[32:47] % rB_data[32:47]) : rA_data[32:47];
+                    sfu_out[48:63] = (rB_data[48:63] != 16'd0) ? (rA_data[48:63] % rB_data[48:63]) : rA_data[48:63];
                 end
                 2'b10: begin // 32-bit x 2
-                    sfu_out[0:31]  = (rB_data[0:31]  != 32'd0) ? (rA_data[0:31]  % rB_data[0:31])  : 32'd0;
-                    sfu_out[32:63] = (rB_data[32:63] != 32'd0) ? (rA_data[32:63] % rB_data[32:63]) : 32'd0;
+                    sfu_out[0:31]  = (rB_data[0:31]  != 32'd0) ? (rA_data[0:31]  % rB_data[0:31])  : rA_data[0:31];
+                    sfu_out[32:63] = (rB_data[32:63] != 32'd0) ? (rA_data[32:63] % rB_data[32:63]) : rA_data[32:63];
                 end
                 2'b11: begin // 64-bit x 1
-                    sfu_out = (rB_data != 64'd0) ? (rA_data % rB_data) : 64'd0;
+                    sfu_out[0:63]  = (rB_data[0:63]  != 64'd0) ? (rA_data[0:63]  % rB_data[0:63])  : rA_data[0:63];
+                end
+                default: begin
+                    sfu_out = 64'h0000_0000_0000_0000;
                 end
             endcase
         end
@@ -135,9 +141,12 @@ always @(*) begin
                 2'b11: begin // 64-bit x 1
                     sfu_out = int_sqrt(rA_data);
                 end
+                default: begin
+                    sfu_out = 64'h0000_0000_0000_0000;
+                end
             endcase
         end
-
+        
         default: sfu_out = 64'h0000_0000_0000_0000;
     endcase
 end

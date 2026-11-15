@@ -3,7 +3,7 @@
 // Description: Combinational Instruction Decode Unit for Cardinal CPU
 //              - Big-Endian field extraction [0:31]
 //              - Decodes R-type, M-type (VLD, VSD), and Branch (VBEZ, VBNEZ)
-//              - Generates 8-bit byte write-enable mask from PPP & WW
+//              - Generates 8-bit byte write-enable mask from PPP
 //              - Identifies SFU operations (VDIV, VMOD, VSQRT)
 //              - Generates source-usage flags for hazard detection
 //              - rD: Destination / Data / Condition Register 
@@ -53,31 +53,15 @@ assign ppp       = instr[21:23];
 assign ww        = instr[24:25];
 assign func_code = instr[26:31];
 
-// Combinational PPP & WW Byte Write-Enable Generation
+// Combinational PPP Byte Write-Enable Generation (Fixed Byte Masks)
 reg [0:7] ppp_byte_mask;
 always @(*) begin
     case (ppp)
-        3'b000: ppp_byte_mask = 8'b1111_1111; // All subfields participate
-        3'b001: ppp_byte_mask = 8'b1111_0000; // Upper 32 bits participate
-        3'b010: ppp_byte_mask = 8'b0000_1111; // Lower 32 bits participate
-        3'b011: begin                         // Even subfields participate
-            case (ww)
-                2'b00:   ppp_byte_mask = 8'b1010_1010; // 8-bit: bytes 0, 2, 4, 6
-                2'b01:   ppp_byte_mask = 8'b1100_1100; // 16-bit: subfields 0, 2 (bytes 0,1 and 4,5)
-                2'b10:   ppp_byte_mask = 8'b1111_0000; // 32-bit: subfield 0 (bytes 0,1,2,3)
-                2'b11:   ppp_byte_mask = 8'b1111_1111; // 64-bit: subfield 0 (all bytes)
-                default: ppp_byte_mask = 8'b0000_0000;
-            endcase
-        end
-        3'b100: begin                         // Odd subfields participate
-            case (ww)
-                2'b00:   ppp_byte_mask = 8'b0101_0101; // 8-bit: bytes 1, 3, 5, 7
-                2'b01:   ppp_byte_mask = 8'b0011_0011; // 16-bit: subfields 1, 3 (bytes 2,3 and 6,7)
-                2'b10:   ppp_byte_mask = 8'b0000_1111; // 32-bit: subfield 1 (bytes 4,5,6,7)
-                2'b11:   ppp_byte_mask = 8'b0000_0000; // 64-bit: no odd subfield exists
-                default: ppp_byte_mask = 8'b0000_0000;
-            endcase
-        end
+        3'b000:  ppp_byte_mask = 8'b1111_1111; // a: All bytes participate
+        3'b001:  ppp_byte_mask = 8'b1111_0000; // u: Upper 32 bits participate
+        3'b010:  ppp_byte_mask = 8'b0000_1111; // d: Lower 32 bits participate
+        3'b011:  ppp_byte_mask = 8'b1010_1010; // e: Even bytes (0, 2, 4, 6)
+        3'b100:  ppp_byte_mask = 8'b0101_0101; // o: Odd bytes (1, 3, 5, 7)
         default: ppp_byte_mask = 8'b0000_0000; // Reserved
     endcase
 end

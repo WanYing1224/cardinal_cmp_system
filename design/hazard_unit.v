@@ -57,14 +57,17 @@ always @(*) begin
     flush_if_id  = 1'b0;
     bubble_id_ex = 1'b0;
 
-    if (branch_taken) begin
-        // Flush speculatively fetched instruction in IF/ID
-        flush_if_id = 1'b1;
-    end else if (data_hazard) begin
-        // Stall IF and ID stages; insert bubble (NOP) into EX stage
+    if (data_hazard) begin
+        // Data hazard MUST take priority over branch_taken so VBEZ/VBNEZ
+        // waits for in-flight rD writes before evaluating or flushing
         stall_pc     = 1'b1;
         stall_if_id  = 1'b1;
         bubble_id_ex = 1'b1;
+    end 
+    
+    else if (branch_taken) begin
+        // Flush speculatively fetched instruction in IF/ID only when not stalled
+        flush_if_id = 1'b1;
     end
 end
 
